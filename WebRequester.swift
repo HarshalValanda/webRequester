@@ -56,14 +56,10 @@ class WebRequester: NSObject {
         request.httpMethod = "POST"
         request.httpBody = parameter.data(using: String.Encoding.utf8)
         
-        if token == nil {
-            debugPrint("Token :", User.getUser().token)
-            request.setValue(User.getUser().token, forHTTPHeaderField: "Authorization")
-        }
-        else {
-            print("Token :", (token ?? ""))
-            request.setValue(token, forHTTPHeaderField: "Authorization")
-        }
+        
+        print("Token :", (token ?? ""))
+        request.setValue(token ?? "", forHTTPHeaderField: "Authorization")
+        
         
         let task = session.dataTask(with: request) { (data, response, error) in
             DispatchQueue.main.async {
@@ -91,15 +87,10 @@ class WebRequester: NSObject {
         request.httpMethod = "POST"
         request.httpBody = parameter.stringFromHttpParameters().data(using: String.Encoding.utf8)
         
-        if token == nil {
-            debugPrint("Token :", User.getUser().token)
-            request.setValue(User.getUser().token, forHTTPHeaderField: "Authorization")
-        }
-        else {
-            print("Token :", (token ?? ""))
-            request.setValue(token, forHTTPHeaderField: "Authorization")
-        }
-    
+       
+        print("Token :", (token ?? ""))
+        request.setValue(token ?? "", forHTTPHeaderField: "Authorization")
+        
         let task = session.dataTask(with: request) { (data, response, error) in
             DispatchQueue.main.async {
                 self.checkResponse(data: data, error: error, callback: {status, result in
@@ -125,7 +116,9 @@ class WebRequester: NSObject {
         
         var request = URLRequest(url: URL(string:requestURL)!)
         request.httpMethod = "POST"
-        request.setValue(User.getUser().token, forHTTPHeaderField: "Authorization")
+       
+//         print("Token :", (token ?? ""))
+//         request.setValue(token ?? "", forHTTPHeaderField: "Authorization")  
         
         let boundary = generateBoundaryString()
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
@@ -193,7 +186,6 @@ class WebRequester: NSObject {
         
         var request = URLRequest(url: URL(string:requestURL)!)
         request.httpMethod = "POST"
-//        request.setValue(User.current.getToken(), forHTTPHeaderField: "Authorization")
         
         let boundary = generateBoundaryString()
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
